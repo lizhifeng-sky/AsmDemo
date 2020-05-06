@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/exec_static_method"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="插入执行静态方法"
+            android:padding="10dp"
+            android:layout_gravity="center" />
+        <TextView
+            android:id="@+id/exec_this_method"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="插入执行本类this方法"
+            android:padding="10dp"
+            android:layout_gravity="center" />
+        <TextView
+            android:id="@+id/exec_field_method"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="插入执行field方法"
+            android:padding="10dp"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+</RelativeLayout>
