@@ -1,5 +1,6 @@
 package com.android.plugin.kotlin
 
+import com.android.plugin.kotlin.add.AddNewFieldVisitor
 import org.objectweb.asm.*
 
 /**
@@ -11,74 +12,52 @@ class AddClassVisitor(classWriter: ClassWriter)
     private var className: String? = null
     private var isFieldPresent=false
     private val fieldName="addField"
-    private var fieldSignature:String?=null
     override fun visit(version: Int,
                        access: Int,
                        name: String?,
                        signature: String?,
                        superName: String?,
                        interfaces: Array<out String>?) {
-
         className = name
-
-        println(">>>>>> addVisitor  " + className + "    " + name)
-//        if (className.equals("com/android/asm/add/AddClassActivity")) {
-////            if (name.equals("onCreate")) {
-////                println(">>>>>> name   "+name)
-////                return ExecStaticMethodVisitor(methodVisitor)
-////            }
-//        } else
-//        if (className.equals("com/android/asm/add/AddFieldActivity")) {
-//            val addNewFieldVisitor = AddNewFieldVisitor(classWriter)
-//            addNewFieldVisitor.visit(version, access, name,
-//                    signature, superName, interfaces)
-//            return
-//        }else{
-            super.visit(version, access, name,
-                    signature, superName, interfaces)
-//        }
-//        else if (className.equals("com/android/asm/add/AddMethodActivity")) {
-//            if (name.equals("onResume")) {
-//                println(">>>>>> name   " + name)
-//                return ExecFieldMethodVisitor(methodVisitor)
-//            }
-//        }
-
+        super.visit(version, access, name, signature, superName, interfaces)
     }
 
-    override fun visitField(access: Int,
-                            name: String?,
-                            descriptor: String?,
-                            signature: String?,
+    override fun visitField(access: Int, name: String?,
+                            descriptor: String?, signature: String?,
                             value: Any?): FieldVisitor {
-        if (className.equals("com/android/asm/add/AddFieldActivity")) {
-            println("+++++++++AddNewFieldVisitor " + name)
-            if (name.equals(fieldName)) {
-                isFieldPresent = true
-            }else{
-                fieldSignature=signature
+        if (className.equals("com/android/asm/add/AddFieldActivity")){
+            if (name.equals(fieldName)){
+                isFieldPresent=true
             }
         }
         return super.visitField(access, name, descriptor, signature, value)
     }
 
-    override fun visitEnd() {
+    override fun visitMethod(
+            access: Int,
+            name: String?,
+            descriptor: String?,
+            signature: String?,
+            exceptions: Array<out String>?): MethodVisitor {
+        val visitMethod = super.visitMethod(access,
+                name,
+                descriptor,
+                signature,
+                exceptions)
         if (className.equals("com/android/asm/add/AddFieldActivity")) {
-            if (!isFieldPresent) {
-                val visitField = cv.visitField(
+            if (name.equals("<init>")){
+                cv.visitField(
                         Opcodes.ACC_PUBLIC,
                         fieldName,
                         "Ljava/lang/String;",
                         null,
-                        fieldName)
-                visitField?.let {
-                    visitField.visitEnd()
-                }
+                        null)
+                        .visitEnd()
+                return AddNewFieldVisitor(visitMethod)
             }
         }
-        super.visitEnd()
+        return visitMethod
     }
-
 }
 
 

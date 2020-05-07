@@ -11,6 +11,7 @@ import com.android.build.api.transform.Transform
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.android.plugin.kotlin.add.AddNewClassVisitor
 import com.android.utils.FileUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -71,12 +72,13 @@ class AsmTransform : Transform(), Plugin<Project> {
 
                             val cr = ClassReader(file.readBytes())
                             val cw = ClassWriter(cr, ClassWriter.COMPUTE_MAXS)
-                            val visitor = ExecClassVisitor(cw)
-                            cr.accept(visitor, ClassReader.EXPAND_FRAMES)
-
-//                            val addVisitor=AddClassVisitor(cw)
-//                            cr.accept(addVisitor, ClassReader.EXPAND_FRAMES)
-
+                            if (classPath.contains("exec")) {
+                                val addVisitor = ExecClassVisitor(cw)
+                                cr.accept(addVisitor, ClassReader.EXPAND_FRAMES)
+                            } else {
+                                val addVisitor = AddClassVisitor(cw)
+                                cr.accept(addVisitor, ClassReader.EXPAND_FRAMES)
+                            }
                             val bytes = cw.toByteArray()
 
                             try {

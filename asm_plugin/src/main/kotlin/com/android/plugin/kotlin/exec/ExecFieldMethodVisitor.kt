@@ -36,6 +36,13 @@ class ExecFieldMethodVisitor(methodVisitor: MethodVisitor)
                 "()V",
                 false
         )
+
+        mv.visitVarInsn(Opcodes.ALOAD,0)
+        mv.visitLdcInsn("usudhusahid")
+        mv.visitFieldInsn(Opcodes.PUTFIELD,
+                "com/android/asm/exec/ExecFieldActivity",
+                "text",
+                "Ljava/lang/String;")
         super.visitCode()
     }
 }

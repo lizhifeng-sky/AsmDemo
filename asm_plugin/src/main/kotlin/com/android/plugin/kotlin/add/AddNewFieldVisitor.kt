@@ -12,34 +12,16 @@ import org.objectweb.asm.*
  * 静态常量
  *
  */
-class AddNewFieldVisitor(classWriter: ClassWriter)
-    : ClassVisitor(Opcodes.ASM5, classWriter) {
-    private var isFieldPresent=false
-    private val fieldName="addField"
-    override fun visitField(access: Int,
-                            name: String?,
-                            descriptor: String?,
-                            signature: String?,
-                            value: Any?): FieldVisitor {
-        println("+++++++++AddNewFieldVisitor "+name)
-        if (name.equals(fieldName)){
-            isFieldPresent=true
-        }
-        return super.visitField(access, name, descriptor, signature, value)
-    }
-
-    override fun visitEnd() {
-        if (!isFieldPresent){
-            val visitField = cv.visitField(
-                    Opcodes.ACC_PUBLIC,
-                    fieldName,
-                    "Ljava/lang/String",
-                    null,
-                    "我是fieldValue")
-            visitField?.let {
-                visitField.visitEnd()
-            }
-        }
-        super.visitEnd()
+class AddNewFieldVisitor(methodVisitor: MethodVisitor)
+    : MethodVisitor(Opcodes.ASM5, methodVisitor) {
+    override fun visitCode() {
+        mv.visitVarInsn(Opcodes.ALOAD,0)
+        mv.visitLdcInsn("usudhusahid")
+        mv.visitFieldInsn(
+                Opcodes.PUTFIELD,
+                "com/android/asm/add/AddFieldActivity",
+                "addField",
+                "Ljava/lang/String;")
+        super.visitCode()
     }
 }

@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 
 import com.android.asm.R;
 import com.android.asm.simulate.ExecFieldTest;
@@ -15,6 +13,7 @@ import com.android.asm.simulate.ExecFieldTest;
  */
 public class ExecFieldActivity extends AppCompatActivity {
     private ExecFieldTest execFieldTest;
+    private String text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
