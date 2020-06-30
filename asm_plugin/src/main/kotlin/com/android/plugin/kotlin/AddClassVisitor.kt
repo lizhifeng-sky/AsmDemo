@@ -1,7 +1,7 @@
 package com.android.plugin.kotlin
 
 import com.android.plugin.kotlin.add.AddNewFieldVisitor
-import org.objectweb.asm.*
+import jdk.internal.org.objectweb.asm.*
 
 /**
  * @author lizhifeng
@@ -12,6 +12,7 @@ class AddClassVisitor(classWriter: ClassWriter)
     private var className: String? = null
     private var isFieldPresent=false
     private val fieldName="addField"
+
     override fun visit(version: Int,
                        access: Int,
                        name: String?,

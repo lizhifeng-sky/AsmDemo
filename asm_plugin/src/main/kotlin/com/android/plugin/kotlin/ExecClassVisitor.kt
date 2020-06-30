@@ -3,10 +3,10 @@ package com.android.plugin.kotlin
 import com.android.plugin.kotlin.exec.ExecFieldMethodVisitor
 import com.android.plugin.kotlin.exec.ExecThisMethodVisitor
 import com.android.plugin.kotlin.exec.ExecStaticMethodVisitor
-import org.objectweb.asm.ClassVisitor
-import org.objectweb.asm.FieldVisitor
-import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
+import jdk.internal.org.objectweb.asm.ClassVisitor
+import jdk.internal.org.objectweb.asm.MethodVisitor
+import jdk.internal.org.objectweb.asm.Opcodes
+
 
 /**
  * @author lizhifeng
@@ -38,9 +38,12 @@ class ExecClassVisitor(classVisitor: ClassVisitor)
                 signature, exceptions)
         println(">>>>>>    " + className + "  methodName " + name)
         if (className.equals("com/android/asm/exec/ExecStaticActivity")) {
+            println(">>>>>> name   " + name)
             if (name.equals("onCreate")) {
-                println(">>>>>> name   " + name)
                 return ExecStaticMethodVisitor(methodVisitor)
+            }
+            if (name.equals("onTestCatch")) {
+                return TryCatch(Opcodes.ASM5,methodVisitor,access,name,descriptor)
             }
         } else if (className.equals("com/android/asm/exec/ExecThisActivity")) {
             if (name.equals("onResume")) {

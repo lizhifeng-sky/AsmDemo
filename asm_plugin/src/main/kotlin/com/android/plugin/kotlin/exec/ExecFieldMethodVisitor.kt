@@ -1,5 +1,8 @@
 package com.android.plugin.kotlin.exec
 
+import jdk.internal.org.objectweb.asm.MethodVisitor
+import jdk.internal.org.objectweb.asm.Opcodes
+
 /**
  * @author lizhifeng
  * @date 2020/4/29 20:36
@@ -7,8 +10,7 @@ package com.android.plugin.kotlin.exec
  * 局部变量（基本数据类型除外）.method
  * 成员变量（基本数据类型除外）.method
  */
-import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
+
 
 class ExecFieldMethodVisitor(methodVisitor: MethodVisitor)
     : MethodVisitor(Opcodes.ASM5, methodVisitor) {

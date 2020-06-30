@@ -1,15 +1,19 @@
 package com.android.plugin.kotlin.exec
 
+import jdk.internal.org.objectweb.asm.AnnotationVisitor
+import jdk.internal.org.objectweb.asm.MethodVisitor
+import jdk.internal.org.objectweb.asm.Opcodes
+
 /**
  * @author lizhifeng
  * @date 2020/4/29 20:36
  * 插入执行 static method
  */
-import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
+
 
 class ExecStaticMethodVisitor(methodVisitor: MethodVisitor)
     : MethodVisitor(Opcodes.ASM5, methodVisitor) {
+
     override fun visitCode() {
         println(">>>>>> ExecStaticMethodVisitor ")
         mv.visitLdcInsn("TAG")
@@ -24,5 +28,11 @@ class ExecStaticMethodVisitor(methodVisitor: MethodVisitor)
         mv.visitInsn(Opcodes.POP)
         super.visitCode()
     }
+
+
+    override fun visitAnnotation(descriptor: String?, visible: Boolean): AnnotationVisitor {
+        return super.visitAnnotation(descriptor, visible)
+    }
+
 }
 

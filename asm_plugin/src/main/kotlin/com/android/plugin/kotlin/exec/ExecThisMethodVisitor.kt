@@ -1,5 +1,8 @@
 package com.android.plugin.kotlin.exec
 
+import jdk.internal.org.objectweb.asm.MethodVisitor
+import jdk.internal.org.objectweb.asm.Opcodes
+
 /**
  * @author lizhifeng
  * @date 2020/4/29 20:36
@@ -25,13 +28,28 @@ package com.android.plugin.kotlin.exec
  * int[] '[I'
  * */
  */
-import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
+
 
 class ExecThisMethodVisitor(methodVisitor: MethodVisitor)
     : MethodVisitor(Opcodes.ASM5, methodVisitor) {
     override fun visitCode() {
         println(">>>>>> ExecThisMethodVisitor ")
+
+      /*  public void onTestExec(String test){
+            Toast.makeText(this,test,Toast.LENGTH_LONG).show();
+        }*/
+
+//        mv.visitVarInsn(Opcodes.ALOAD,0)
+//        mv.visitLdcInsn("public void onTestExec(String test){\n" +
+//                "            Toast.makeText(this,test,Toast.LENGTH_LONG).show();\n" +
+//                "        }")
+//        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+//                "com/android/asm/exec/ExecThisActivity",
+//                "onTestExec",
+//                "(Ljava/lang/String)V",
+//                false)
+
+
         //visit this
         mv.visitVarInsn(Opcodes.ALOAD, 0)
         //visit method

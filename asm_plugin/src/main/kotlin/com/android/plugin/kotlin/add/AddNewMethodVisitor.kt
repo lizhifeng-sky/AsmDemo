@@ -1,10 +1,10 @@
 package com.android.plugin.kotlin.add
 
+import jdk.internal.org.objectweb.asm.ClassWriter
+import jdk.internal.org.objectweb.asm.MethodVisitor
+import jdk.internal.org.objectweb.asm.Opcodes
 
-import org.gradle.internal.impldep.bsh.org.objectweb.asm.Constants
-import org.objectweb.asm.ClassWriter
-import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
+
 /**
  * @author lizhifeng
  * @date 2020/5/6 10:54
@@ -19,12 +19,12 @@ class AddNewMethodVisitor(methodVisitor: MethodVisitor)
 
         // 添加add方法
         val classWriter= ClassWriter(null, ClassWriter.COMPUTE_MAXS)
-        mv = classWriter.visitMethod(Constants.ACC_PUBLIC, "add", "(II)I", null, null)
+        mv = classWriter.visitMethod(Opcodes.ACC_PUBLIC, "add", "(II)I", null, null)
         mv.visitCode()
-        mv.visitVarInsn(Constants.ILOAD, 1)
-        mv.visitVarInsn(Constants.ILOAD, 2)
-        mv.visitInsn(Constants.IADD)
-        mv.visitInsn(Constants.IRETURN)
+        mv.visitVarInsn(Opcodes.ILOAD, 1)
+        mv.visitVarInsn(Opcodes.ILOAD, 2)
+        mv.visitInsn(Opcodes.IADD)
+        mv.visitInsn(Opcodes.IRETURN)
         mv.visitMaxs(2, 3)
         mv.visitEnd()
     }

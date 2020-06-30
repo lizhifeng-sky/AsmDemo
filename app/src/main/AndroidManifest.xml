@@ -9,9 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Main2Activity">
-
-        </activity>
         <activity android:name=".add.AddMethodActivity" />
         <activity android:name=".add.AddFieldActivity" />
         <activity android:name=".add.AddClassActivity" />
@@ -19,7 +16,7 @@
         <activity android:name=".exec.ExecThisActivity" />
         <activity android:name=".exec.ExecStaticActivity" />
         <activity android:name=".NextActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.android.asm.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
