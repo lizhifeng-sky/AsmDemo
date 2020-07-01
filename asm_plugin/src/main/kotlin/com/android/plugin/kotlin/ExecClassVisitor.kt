@@ -36,27 +36,25 @@ class ExecClassVisitor(classVisitor: ClassVisitor)
         val methodVisitor = super.visitMethod(access,
                 name, descriptor,
                 signature, exceptions)
-        println(">>>>>>    " + className + "  methodName " + name)
-        if (className.equals("com/android/asm/exec/ExecStaticActivity")) {
-            println(">>>>>> name   " + name)
-            if (name.equals("onCreate")) {
-                return ExecStaticMethodVisitor(methodVisitor)
-            }
-            if (name.equals("onTestCatch")) {
-                return TryCatch(Opcodes.ASM5,methodVisitor,access,name,descriptor)
-            }
-        } else if (className.equals("com/android/asm/exec/ExecThisActivity")) {
-            if (name.equals("onResume")) {
-                println(">>>>>> name   " + name)
-                return ExecThisMethodVisitor(methodVisitor)
-            }
-        } else if (className.equals("com/android/asm/exec/ExecFieldActivity")) {
-            if (name.equals("onResume")) {
-                println(">>>>>> name   " + name)
-                return ExecFieldMethodVisitor(methodVisitor)
-            }
-        }
-        return methodVisitor
+//        println(">>>>>>    " + className + "  methodName " + name)
+//        if (className.equals("com/android/asm/exec/ExecStaticActivity")) {
+//            println(">>>>>> name   " + name)
+//            if (name.equals("onCreate")) {
+//                return ExecStaticMethodVisitor(methodVisitor)
+//            }
+//        } else if (className.equals("com/android/asm/exec/ExecThisActivity")) {
+//            if (name.equals("onResume")) {
+//                println(">>>>>> name   " + name)
+//                return ExecThisMethodVisitor(methodVisitor)
+//            }
+//        } else if (className.equals("com/android/asm/exec/ExecFieldActivity")) {
+//            if (name.equals("onResume")) {
+//                println(">>>>>> name   " + name)
+//                return ExecFieldMethodVisitor(methodVisitor)
+//            }
+//        }
+        return TryCatchAdapter(Opcodes.ASM5, methodVisitor, access, name, descriptor)
+//        return methodVisitor
     }
 }
 

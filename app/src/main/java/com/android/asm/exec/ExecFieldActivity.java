@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.android.asm.R;
+import com.android.asm.annotation.Catch;
 import com.android.asm.simulate.ExecFieldTest;
 
 /**
@@ -15,6 +16,7 @@ public class ExecFieldActivity extends AppCompatActivity {
     private ExecFieldTest execFieldTest;
     private String text;
 
+    @Catch(value = "异常来了")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +24,7 @@ public class ExecFieldActivity extends AppCompatActivity {
         execFieldTest=new ExecFieldTest();
     }
 
+    @Catch(value = "异常来了")
     @Override
     protected void onResume() {
         super.onResume();

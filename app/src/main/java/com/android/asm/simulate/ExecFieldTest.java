@@ -1,6 +1,5 @@
 package com.android.asm.simulate;
 
-import android.util.Log;
 
 /**
  * @author lizhifeng
@@ -8,6 +7,8 @@ import android.util.Log;
  */
 public class ExecFieldTest {
     public void execFieldMethod() {
-        Log.e("lzf_exec_field", "我的插入执行 field.method");
+        long startTime = System.currentTimeMillis();
+        long endTime = System.currentTimeMillis();
+        long value=endTime-startTime;
     }
 }
