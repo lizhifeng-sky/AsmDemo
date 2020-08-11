@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
 //                        ExecThisActivity.class));
                 userBean=new UserBean();
                 userBean.setUserName("userName");
-                userBean.setUserAge("wqeq");
             }
         });
         final TextView viewById = findViewById(R.id.exec_static_method);
@@ -48,12 +47,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        TextView viewById2 = findViewById(R.id.exec_field_method);
+        final TextView viewById2 = findViewById(R.id.exec_field_method);
         viewById2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,
-                        ExecFieldActivity.class));
+                viewById2.setText(userBean.getUserSex());
+//                startActivity(new Intent(MainActivity.this,
+//                        ExecFieldActivity.class));
             }
         });
     }

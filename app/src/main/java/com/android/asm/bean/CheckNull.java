@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * @author lizhifeng
  * @date 2020/8/10 17:11
  */
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD,ElementType.PARAMETER})
 public @interface CheckNull {
     String value();

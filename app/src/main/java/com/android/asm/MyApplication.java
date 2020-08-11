@@ -14,6 +14,6 @@ public class MyApplication extends Application {
         super.onCreate();
         CheckNullBeanManager
                 .getInstance()
-                .setDefaultUncaughtExceptionHandler();
+                .setContext(this);
     }
 }

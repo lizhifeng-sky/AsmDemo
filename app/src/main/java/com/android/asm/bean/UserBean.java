@@ -1,6 +1,7 @@
 package com.android.asm.bean;
 
 import com.android.asm.bean.manager.CheckNullBeanManager;
+import com.android.asm.bean.manager.CheckNullException;
 
 /**
  * @author lizhifeng
@@ -38,7 +39,7 @@ public class UserBean {
                         .getInstance()
                         .throwNull("UserBean","userSex","性别不能为null");
             }
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return userSex;

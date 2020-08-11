@@ -1,17 +1,15 @@
 package com.android.asm.bean.manager;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
+import android.content.Context;
 
 /**
  * @author lizhifeng
  * @date 2020/8/11 09:52
  */
-public class CheckNullBeanManager implements Thread.UncaughtExceptionHandler {
+public class CheckNullBeanManager {
     private static volatile CheckNullBeanManager instance;
-    private static volatile Thread.UncaughtExceptionHandler defaultUncaughtExceptionHandler;
     private static final String TAG = "CheckNullBeanManager";
+    private Context context;
 
     private CheckNullBeanManager() {
     }
@@ -27,31 +25,15 @@ public class CheckNullBeanManager implements Thread.UncaughtExceptionHandler {
         return instance;
     }
 
-    public void setDefaultUncaughtExceptionHandler() {
-        Thread.setDefaultUncaughtExceptionHandler(this);
+    public void setContext(Context context){
+        this.context=context;
     }
 
-    public NullPointerException throwNull(String className,
+    public CheckNullException throwNull(String className,
                                           String fieldName,
                                           String errorMessage) {
         String message = "null发生在" + className + "   " + fieldName + "   错误信息：" + errorMessage;
-//        checkExceptionHandler();
-        return new NullPointerException(message);
+        return new CheckNullException(message,context);
     }
 
-    private void checkExceptionHandler() {
-//        Thread.UncaughtExceptionHandler defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
-        if (CheckNullBeanManager.defaultUncaughtExceptionHandler == null) {
-            Thread.setDefaultUncaughtExceptionHandler(this);
-        } else {
-            Log.e(TAG, "checkExceptionHandler has handler");
-        }
-    }
-
-    @Override
-    public void uncaughtException(@NonNull Thread t, @NonNull Throwable e) {
-        if (e.getMessage() != null) {
-            Log.e(TAG, e.getMessage());
-        }
-    }
 }

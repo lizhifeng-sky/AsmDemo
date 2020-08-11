@@ -37,7 +37,7 @@ class CheckNullMethodVisitor(
         super.visitCode()
     }
 
-    private fun defaultVisit(fieldName:String) {
+    private fun defaultVisit(fieldName: String) {
 //            public String getUserName() {
 //                if (this.userName == null) {
 //                    throw new NullPointerException("用户名不能为null");
@@ -71,7 +71,7 @@ class CheckNullMethodVisitor(
         visitMethod.visitLabel(label)
     }
 
-    private fun managerVisit(fieldName:String) {
+    private fun managerVisit(fieldName: String) {
 //        try {
 //            if (this.userAge == null) {
 //                throw new NullPointerException();
@@ -83,7 +83,7 @@ class CheckNullMethodVisitor(
 //        return this.userAge;
 
         val errorMessage = paramList.get(fieldName)
-        mv.visitTryCatchBlock(l0,l1,l2,"java/lang/Exception")
+        mv.visitTryCatchBlock(l0, l1, l2, "java/lang/Exception")
 
         mv.visitLabel(l0)
         mv.visitVarInsn(Opcodes.ALOAD, 0)
@@ -94,36 +94,53 @@ class CheckNullMethodVisitor(
                 "Ljava/lang/String;")
         mv.visitJumpInsn(Opcodes.IFNONNULL, l1)
 
-        val l3=Label()
+        val l3 = Label()
         mv.visitLabel(l3)
-        mv.visitTypeInsn(Opcodes.NEW,"java/lang/NullPointerException")
-        mv.visitInsn(Opcodes.DUP)
         mv.visitMethodInsn(
-                Opcodes.INVOKESPECIAL,
-                "java/lang/NullPointerException",
-                "<init>",
-                "()V",
+                Opcodes.INVOKESTATIC,
+                "com/android/asm/bean/manager/CheckNullBeanManager",
+                "getInstance",
+                "()Lcom/android/asm/bean/manager/CheckNullBeanManager;",
                 false
         )
+        mv.visitLdcInsn(className)
+        mv.visitLdcInsn(fieldName)
+        mv.visitLdcInsn(errorMessage)
+        mv.visitMethodInsn(
+                Opcodes.INVOKESPECIAL,
+                "com/android/asm/bean/manager/CheckNullBeanManager",
+                "throwNull",
+                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/NullPointerException;",
+                false
+        )
+//        mv.visitTypeInsn(Opcodes.NEW, "java/lang/NullPointerException")
+//        mv.visitInsn(Opcodes.DUP)
+//        mv.visitMethodInsn(
+//                Opcodes.INVOKESPECIAL,
+//                "java/lang/NullPointerException",
+//                "<init>",
+//                "()V",
+//                false
+//        )
         mv.visitInsn(Opcodes.ATHROW)
 
         mv.visitLabel(l1)
         mv.visitFrame(Opcodes.F_SAME, 0, null, 1,
                 arrayOf("java/lang/Exception"))
 
-        val l4=Label()
+        val l4 = Label()
         mv.visitJumpInsn(Opcodes.GOTO, l4)
         mv.visitLabel(l2)
         mv.visitFrame(Opcodes.F_SAME1, 0, null, 1,
-                arrayOf("java/lang/NullPointerException"))
-        mv.visitVarInsn(Opcodes.ASTORE,1)
+                arrayOf("java/lang/Exception"))
+        mv.visitVarInsn(Opcodes.ASTORE, 1)
 
-        val l5=Label()
+        val l5 = Label()
         mv.visitLabel(l5)
-        mv.visitVarInsn(Opcodes.ALOAD,1)
-                visitMethod.visitMethodInsn(
+        mv.visitVarInsn(Opcodes.ALOAD, 1)
+        visitMethod.visitMethodInsn(
                 Opcodes.INVOKEVIRTUAL,
-                "java/lang/NullPointerException",
+                "java/lang/Exception",
                 "printStackTrace",
                 "()V",
                 false
@@ -132,30 +149,30 @@ class CheckNullMethodVisitor(
         mv.visitLabel(l4)
         mv.visitFrame(Opcodes.F_SAME, 0, null, 1,
                 arrayOf("java/lang/Exception"))
-        mv.visitVarInsn(Opcodes.ALOAD,0)
+        mv.visitVarInsn(Opcodes.ALOAD, 0)
         mv.visitFieldInsn(
                 Opcodes.GETFIELD,
                 className,
                 fieldName,
-                "Ljava/lang/String"
+                "Ljava/lang/String;"
         )
         mv.visitInsn(Opcodes.ARETURN)
 
-        val l6=Label()
+        val l6 = Label()
         mv.visitLabel(l6)
         mv.visitLocalVariable("e",
-        "Ljava/lang/NullPointerException",
+                "Ljava/lang/Exception;",
                 null,
                 l5,
                 l4,
                 1)
         mv.visitLocalVariable("this",
-                "L$className",
+                "L$className;",
                 null,
                 l0,
                 l6,
                 0)
-        mv.visitMaxs(2,2)
+        mv.visitMaxs(2, 2)
 
 //        visitMethod.visitMethodInsn(
 //                Opcodes.INVOKESTATIC,
