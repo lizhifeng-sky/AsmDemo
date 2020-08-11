@@ -1,6 +1,7 @@
 package com.android.asm;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.android.asm.bean.manager.CheckNullBeanManager;
 
@@ -9,9 +10,11 @@ import com.android.asm.bean.manager.CheckNullBeanManager;
  * @date 2020/8/11 11:42
  */
 public class MyApplication extends Application {
+    public static Context context;
     @Override
     public void onCreate() {
         super.onCreate();
+        context=this;
         CheckNullBeanManager
                 .getInstance()
                 .setContext(this);

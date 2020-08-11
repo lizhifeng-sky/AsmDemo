@@ -118,7 +118,7 @@ class CheckNullClassVisitor(classWriter: ClassWriter)
 //
 //                    println("NullVisitor 改造的方法   $name")
 //                }
-                return CheckNullMethodVisitor(className,name,paramList,visitMethod)
+                return CheckNullMethodVisitor(className,name,paramList,visitMethod,signature)
             }
         }
         return visitMethod

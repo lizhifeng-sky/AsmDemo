@@ -1,8 +1,4 @@
 package com.android.asm.bean;
-
-import com.android.asm.bean.manager.CheckNullBeanManager;
-import com.android.asm.bean.manager.CheckNullException;
-
 /**
  * @author lizhifeng
  * @date 2020/8/10 17:07
@@ -13,7 +9,7 @@ public class UserBean {
     private String userName;
     @CheckNull("年龄不能为null")
     private String userAge;
-//    @CheckNull("性别不能为null")
+    @CheckNull("性别不能为null")
     private String userSex;
 
     public String getUserName() {
@@ -33,15 +29,6 @@ public class UserBean {
     }
 
     public String getUserSex() {
-        try {
-            if (userSex==null){
-                throw CheckNullBeanManager
-                        .getInstance()
-                        .throwNull("UserBean","userSex","性别不能为null");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return userSex;
     }
 

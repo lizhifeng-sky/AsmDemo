@@ -1,7 +1,6 @@
 package com.android.plugin.kotlin.bean
 
 import org.objectweb.asm.*
-import org.objectweb.asm.commons.AdviceAdapter
 
 /**
  * @author lizhifeng
@@ -11,7 +10,8 @@ class CheckNullMethodVisitor(
         val className: String?,
         val name: String,
         val paramList: MutableMap<String, String>,
-        val visitMethod: MethodVisitor)
+        val visitMethod: MethodVisitor,
+        val signature: String?)
     : MethodVisitor(Opcodes.ASM5, visitMethod) {
     private val l0 = Label()
     private val l1 = Label()
@@ -96,49 +96,51 @@ class CheckNullMethodVisitor(
 
         val l3 = Label()
         mv.visitLabel(l3)
-        mv.visitMethodInsn(
-                Opcodes.INVOKESTATIC,
-                "com/android/asm/bean/manager/CheckNullBeanManager",
-                "getInstance",
-                "()Lcom/android/asm/bean/manager/CheckNullBeanManager;",
-                false
-        )
-        mv.visitLdcInsn(className)
-        mv.visitLdcInsn(fieldName)
+//        mv.visitMethodInsn(
+//                Opcodes.INVOKESTATIC,
+//                "com/android/asm/bean/manager/CheckNullBeanManager",
+//                "getInstance",
+//                "()Lcom/android/asm/bean/manager/CheckNullBeanManager;",
+//                false
+//        )
+//        mv.visitLdcInsn(className)
+//        mv.visitLdcInsn(fieldName)
+//        mv.visitLdcInsn(errorMessage)
+//        mv.visitMethodInsn(
+//                Opcodes.INVOKESPECIAL,
+//                "com/android/asm/bean/manager/CheckNullBeanManager",
+//                "throwNull",
+//                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/android/asm/bean/manager/CheckNullException;",
+//                false
+//        )
+        mv.visitTypeInsn(Opcodes.NEW, "com/android/asm/bean/manager/CheckNullException")
+        mv.visitInsn(Opcodes.DUP)
+        mv.visitLdcInsn(className+"_${fieldName}_${errorMessage}")
         mv.visitLdcInsn(errorMessage)
         mv.visitMethodInsn(
                 Opcodes.INVOKESPECIAL,
-                "com/android/asm/bean/manager/CheckNullBeanManager",
-                "throwNull",
-                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/NullPointerException;",
+                "com/android/asm/bean/manager/CheckNullException",
+                "<init>",
+                "(Ljava/lang/String;Ljava/lang/String;)V",
                 false
         )
-//        mv.visitTypeInsn(Opcodes.NEW, "java/lang/NullPointerException")
-//        mv.visitInsn(Opcodes.DUP)
-//        mv.visitMethodInsn(
-//                Opcodes.INVOKESPECIAL,
-//                "java/lang/NullPointerException",
-//                "<init>",
-//                "()V",
-//                false
-//        )
         mv.visitInsn(Opcodes.ATHROW)
 
         mv.visitLabel(l1)
-        mv.visitFrame(Opcodes.F_SAME, 0, null, 1,
-                arrayOf("java/lang/Exception"))
+//        mv.visitFrame(Opcodes.F_SAME, 0, null, 1,
+//                arrayOf("java/lang/Exception"))
 
         val l4 = Label()
         mv.visitJumpInsn(Opcodes.GOTO, l4)
         mv.visitLabel(l2)
-        mv.visitFrame(Opcodes.F_SAME1, 0, null, 1,
-                arrayOf("java/lang/Exception"))
+//        mv.visitFrame(Opcodes.F_SAME1, 0, null, 1,
+//                arrayOf("java/lang/Exception"))
         mv.visitVarInsn(Opcodes.ASTORE, 1)
 
         val l5 = Label()
         mv.visitLabel(l5)
         mv.visitVarInsn(Opcodes.ALOAD, 1)
-        visitMethod.visitMethodInsn(
+        mv.visitMethodInsn(
                 Opcodes.INVOKEVIRTUAL,
                 "java/lang/Exception",
                 "printStackTrace",
@@ -147,8 +149,8 @@ class CheckNullMethodVisitor(
         )
 
         mv.visitLabel(l4)
-        mv.visitFrame(Opcodes.F_SAME, 0, null, 1,
-                arrayOf("java/lang/Exception"))
+//        mv.visitFrame(Opcodes.F_SAME, 0, null, 1,
+//                arrayOf("java/lang/Exception"))
         mv.visitVarInsn(Opcodes.ALOAD, 0)
         mv.visitFieldInsn(
                 Opcodes.GETFIELD,
@@ -162,46 +164,17 @@ class CheckNullMethodVisitor(
         mv.visitLabel(l6)
         mv.visitLocalVariable("e",
                 "Ljava/lang/Exception;",
-                null,
+                signature,
                 l5,
                 l4,
                 1)
         mv.visitLocalVariable("this",
                 "L$className;",
-                null,
+                signature,
                 l0,
                 l6,
                 0)
-        mv.visitMaxs(2, 2)
-
-//        visitMethod.visitMethodInsn(
-//                Opcodes.INVOKESTATIC,
-//                "com/android/asm/bean/manager/CheckNullBeanManager",
-//                "getInstance",
-//                "()Lcom/android/asm/bean/manager/CheckNullBeanManager;",
-//                false
-//        )
-//        visitMethod.visitLdcInsn(className)
-//        visitMethod.visitLdcInsn(fieldName)
-//        visitMethod.visitLdcInsn(errorMessage)
-//        visitMethod.visitMethodInsn(
-//                Opcodes.INVOKESPECIAL,
-//                "com/android/asm/bean/manager/CheckNullBeanManager",
-//                "throwNull",
-//                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/NullPointerException;",
-//                false
-//        )
-//
-//
-//        visitMethod.visitJumpInsn(Opcodes.GOTO,l1)
-//        mv.visitVarInsn(AdviceAdapter.ASTORE, 1)
-//        mv.visitVarInsn(AdviceAdapter.ALOAD, 1)
-//        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-//                "java/lang/Exception",
-//                "printStackTrace",
-//                "()V",
-//                false)
-//        mv.visitInsn(Opcodes.RETURN)
+        mv.visitMaxs(20, 20)
     }
 }
 

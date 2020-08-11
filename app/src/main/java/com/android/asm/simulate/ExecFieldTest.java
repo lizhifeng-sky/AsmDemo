@@ -12,7 +12,7 @@ public class ExecFieldTest {
             if (value==null){
                 throw new NullPointerException();
             }
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return value;

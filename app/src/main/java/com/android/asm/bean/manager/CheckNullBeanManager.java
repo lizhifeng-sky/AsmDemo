@@ -33,7 +33,7 @@ public class CheckNullBeanManager {
                                           String fieldName,
                                           String errorMessage) {
         String message = "null发生在" + className + "   " + fieldName + "   错误信息：" + errorMessage;
-        return new CheckNullException(message,context);
+        return new CheckNullException(message,errorMessage);
     }
 
 }
