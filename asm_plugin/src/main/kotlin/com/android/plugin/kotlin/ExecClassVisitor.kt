@@ -3,9 +3,9 @@ package com.android.plugin.kotlin
 import com.android.plugin.kotlin.exec.ExecFieldMethodVisitor
 import com.android.plugin.kotlin.exec.ExecThisMethodVisitor
 import com.android.plugin.kotlin.exec.ExecStaticMethodVisitor
-import jdk.internal.org.objectweb.asm.ClassVisitor
-import jdk.internal.org.objectweb.asm.MethodVisitor
-import jdk.internal.org.objectweb.asm.Opcodes
+import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.MethodVisitor
+import org.objectweb.asm.Opcodes
 
 
 /**

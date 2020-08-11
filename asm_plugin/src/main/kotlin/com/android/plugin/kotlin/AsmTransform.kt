@@ -11,9 +11,10 @@ import com.android.build.api.transform.Transform
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.android.plugin.kotlin.bean.CheckNullClassVisitor
 import com.android.utils.FileUtils
-import jdk.internal.org.objectweb.asm.ClassReader
-import jdk.internal.org.objectweb.asm.ClassWriter
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassWriter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.io.FileOutputStream
@@ -73,6 +74,9 @@ class AsmTransform : Transform(), Plugin<Project> {
                             val cw = ClassWriter(cr, ClassWriter.COMPUTE_MAXS)
                             if (classPath.contains("exec")) {
                                 val addVisitor = ExecClassVisitor(cw)
+                                cr.accept(addVisitor, ClassReader.EXPAND_FRAMES)
+                            } else if (classPath.contains("UserBean")) {
+                                val addVisitor = CheckNullClassVisitor(cw)
                                 cr.accept(addVisitor, ClassReader.EXPAND_FRAMES)
                             } else {
                                 val addVisitor = AddClassVisitor(cw)

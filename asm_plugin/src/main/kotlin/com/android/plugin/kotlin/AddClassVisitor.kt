@@ -1,7 +1,7 @@
 package com.android.plugin.kotlin
 
 import com.android.plugin.kotlin.add.AddNewFieldVisitor
-import jdk.internal.org.objectweb.asm.*
+import org.objectweb.asm.*
 
 /**
  * @author lizhifeng

@@ -25,6 +25,10 @@ sourceSets {
 dependencies {
     implementation gradleApi()
     implementation 'com.android.tools.build:gradle:3.6.2'
+    // ASM 相关
+    implementation 'org.ow2.asm:asm:7.1'
+    implementation 'org.ow2.asm:asm-util:7.1'
+    implementation 'org.ow2.asm:asm-commons:7.1'
 }
 
 uploadArchives {

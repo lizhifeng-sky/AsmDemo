@@ -1,6 +1,6 @@
 package com.android.plugin.kotlin.annotation
 
-import jdk.internal.org.objectweb.asm.AnnotationVisitor
+import org.objectweb.asm.AnnotationVisitor
 
 /**
  * @author lizhifeng

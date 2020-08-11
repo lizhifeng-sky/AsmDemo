@@ -1,12 +1,13 @@
 package com.android.plugin.kotlin
 
 import com.android.plugin.kotlin.annotation.CatchAnnotationVisitor
+import com.android.plugin.kotlin.annotation.ThreadAnnotationVisitor
 import com.android.plugin.kotlin.annotation.TimerAnnotationVisitor
-import jdk.internal.org.objectweb.asm.AnnotationVisitor
-import jdk.internal.org.objectweb.asm.Label
-import jdk.internal.org.objectweb.asm.MethodVisitor
-import jdk.internal.org.objectweb.asm.Type
-import jdk.internal.org.objectweb.asm.commons.AdviceAdapter
+import org.objectweb.asm.AnnotationVisitor
+import org.objectweb.asm.Label
+import org.objectweb.asm.MethodVisitor
+import org.objectweb.asm.Type
+import org.objectweb.asm.commons.AdviceAdapter
 import org.objectweb.asm.Opcodes
 
 /**
@@ -16,31 +17,35 @@ import org.objectweb.asm.Opcodes
 class TryCatchAdapter(api: Int,
                       mv: MethodVisitor?,
                       access: Int,
-                      val name: String?,
+                      name: String?,
                       val desc: String?) : AdviceAdapter(api, mv, access, name, desc) {
     private val catchStart = Label()
     private val catchEnd = Label()
     private val catchHandler = Label()
     private var catchAnnotationVisitor: CatchAnnotationVisitor? = null
     private var timerAnnotationVisitor: TimerAnnotationVisitor? = null
+    private var threadAnnotationVisitor: ThreadAnnotationVisitor? = null
 
     override fun visitAnnotation(desc: String?, visible: Boolean): AnnotationVisitor {
         val visitAnnotation = super.visitAnnotation(desc, visible)
-//        desc?.let {
-//            println("我要找的 注解啊$desc")
-//            if (desc == "Lcom/android/asm/annotation/Catch;") {
-//                catchAnnotationVisitor = CatchAnnotationVisitor(api, visitAnnotation)
-//                return catchAnnotationVisitor!!
-//            }
-//            if (desc == "Lcom/android/asm/annotation/Timer;") {
-//                println("匹配到了 Lcom/android/asm/annotation/Timer;")
-//                timerAnnotationVisitor = TimerAnnotationVisitor(api, visitAnnotation)
-//                return timerAnnotationVisitor!!
-//            }
-//        }
-        timerAnnotationVisitor = TimerAnnotationVisitor(api, visitAnnotation)
-        return timerAnnotationVisitor!!
-//        return visitAnnotation
+        desc?.let {
+            println("我要找的 注解啊$desc")
+            if (desc == "Lcom/android/asm/annotation/Catch;") {
+                catchAnnotationVisitor = CatchAnnotationVisitor(api, visitAnnotation)
+                return catchAnnotationVisitor!!
+            }
+            if (desc == "Lcom/android/asm/annotation/Timer;") {
+                println("匹配到了 Lcom/android/asm/annotation/Timer;")
+                timerAnnotationVisitor = TimerAnnotationVisitor(api, visitAnnotation)
+                return timerAnnotationVisitor!!
+            }
+            if (desc == "Lcom/android/asm/annotation/RunOnBackThread;") {
+                println("匹配到了 Lcom/android/asm/annotation/RunOnBackThread;")
+                threadAnnotationVisitor = ThreadAnnotationVisitor(api, visitAnnotation)
+                return threadAnnotationVisitor!!
+            }
+        }
+        return visitAnnotation
     }
 
     override fun onMethodEnter() {
@@ -50,7 +55,6 @@ class TryCatchAdapter(api: Int,
             mv.visitTryCatchBlock(catchStart, catchEnd, catchHandler, "java/lang/Exception")
         }
         timerAnnotationVisitor?.let {
-
             mv.visitMethodInsn(
                     Opcodes.INVOKESTATIC,
                     "com/android/asm/time/TimeUtils",
@@ -64,6 +68,8 @@ class TryCatchAdapter(api: Int,
                     "initStartTime",
                     "(Ljava/lang/String;)V",
                     false)
+        }
+        threadAnnotationVisitor?.let {
         }
     }
 
